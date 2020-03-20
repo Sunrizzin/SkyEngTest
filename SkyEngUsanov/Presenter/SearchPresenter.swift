@@ -28,7 +28,11 @@ class SearchPresenter {
     }
     
     func refresh(view: UIView, _ searchText: String) {
-        apiService.search(view: view, text: searchText) { (state) in
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Loading"
+        hud.show(in: view)
+        apiService.search(text: searchText) { (state) in
+            hud.dismiss(animated: true)
             if !state {
                 self.searchViewDelegate?.showAlert()
             }

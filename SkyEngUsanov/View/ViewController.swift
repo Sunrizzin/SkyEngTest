@@ -44,6 +44,7 @@ class ViewController: UIViewController {
                 print("")
             case .update(_, deletions: _, insertions: _, modifications: _):
                 self.tableView.reloadSections([0], with: .fade)
+                
             }
         })
     }
