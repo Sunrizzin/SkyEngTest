@@ -12,7 +12,6 @@ import RealmSwift
 import JGProgressHUD
 
 class APIService {
-    private let realm = try! Realm()
     
     func search(view: UIView, text: String, _ completion: @escaping (Bool) -> Void) {
         
@@ -27,13 +26,14 @@ class APIService {
                     hud.dismiss(animated: true)
                     completion(false)
                 case .success(let items):
+                    let realm = try! Realm()
                     DispatchQueue.main.async {
                         do {
-                            try self.realm.write {
-                                self.realm.deleteAll()
+                            try realm.write {
+                                realm.deleteAll()
                                 autoreleasepool {
                                     for item in items {
-                                        self.realm.add(item, update: .all)
+                                        realm.add(item, update: .all)
                                     }
                                 }
                                 hud.dismiss(animated: true)
@@ -52,8 +52,9 @@ class APIService {
     }
     
     func clearData() {
-        try! self.realm.write {
-            self.realm.deleteAll()
+        let realm = try! Realm()
+        try! realm.write {
+            realm.deleteAll()
         }
     }
 }
